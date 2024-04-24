@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import Sidebar from "@/components/sidebar/sidebar";
+import Navbar from "@/components/navbar/navbar";
+import classes from '@/styles/layout.module.css';
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { SessionProvider } from "next-auth/react";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,9 +23,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={cn(
+          "min-h-screen bg-accent font-sans antialiased grid w-full pl-[56px]",
+          fontSans.variable
+        )}
+      >
+        <TooltipProvider>
+          <Sidebar />
+          <div>
+            <Navbar />
+            <div className="p-2 px-3">
+              {children}
+            </div>
+          </div>
+        </TooltipProvider>
+      </body>
     </html>
   );
 }
